@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfiles Sensoriales del Café de Ituango con IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .gemini-btn {
+            display: inline-block;
+            width: 100%;
+            background-color: #06D6A0;
+            color: white;
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .gemini-btn:hover {
+            background-color: #05BF8D;
+        }
+        .gemini-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="text-[#073B4C]">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#118AB2] mb-4">El Mosaico Sensorial del Café de Ituango</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">Una guía para compradores internacionales que buscan perfiles de taza excepcionales, ahora mejorada con análisis de IA. Descubra cómo las características únicas de cada vereda se alinean con las preferencias de los mercados más exigentes.</p>
+        </header>
+
+        <main id="veredas-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        </main>
+
+        <footer class="text-center mt-16">
+             <div class="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+                <h2 class="text-2xl font-bold text-[#118AB2] mb-3">Conecte con el Origen</h2>
+                <p class="text-gray-600 mb-4">Ituango ofrece una diversidad de perfiles aún por descubrir. Esta selección representa una muestra del potencial de la región. Si está interesado en alguno de estos perfiles de café únicos o desea explorar más, no dude en contactar a la Cooperativa de Caficultores de Ituango.</p>
+                <a href="#" class="inline-block bg-[#FFD166] text-[#073B4C] font-bold py-2 px-6 rounded-lg hover:bg-[#FFC33A] transition-colors duration-300">Contactar a la Cooperativa</a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        const veredasData = [
+            {
+                id: 'buenavista',
+                nombre: 'Buenavista',
+                notas: 'Panela, Floral, Frutos Rojos',
+                mercados: [
+                    { nombre: 'Alemania', emoji: '🇩🇪' },
+                    { nombre: 'Australia', emoji: '🇦🇺' },
+                    { nombre: 'EE.UU. (Costa Este)', emoji: '🇺🇸' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.2, 'Sabor Residual': 8.0, Acidez: 8.2, Cuerpo: 8.2, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'cortaderal',
+                nombre: 'Cortaderal',
+                notas: 'Cítrico, Uva, Té',
+                mercados: [
+                    { nombre: 'Japón', emoji: '🇯🇵' },
+                    { nombre: 'Reino Unido', emoji: '🇬🇧' },
+                    { nombre: 'Países Nórdicos', emoji: '🇸🇪' }
+                ],
+                perfil: { Fragancia: 8.0, Sabor: 7.8, 'Sabor Residual': 7.8, Acidez: 8.0, Cuerpo: 8.0, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'el-cedral',
+                nombre: 'El Cedral',
+                notas: 'Frutos Rojos, Vainilla, Caramelo',
+                mercados: [
+                    { nombre: 'Canadá', emoji: '🇨🇦' },
+                    { nombre: 'Corea del Sur', emoji: '🇰🇷' },
+                    { nombre: 'Suiza', emoji: '🇨🇭' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.2, 'Sabor Residual': 8.0, Acidez: 8.2, Cuerpo: 8.0, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'el-naranjo',
+                nombre: 'El Naranjo',
+                notas: 'Cítrico, Floral, Limoncillo',
+                mercados: [
+                    { nombre: 'EE.UU. (Costa Oeste)', emoji: '🇺🇸' },
+                    { nombre: 'Países Bajos', emoji: '🇳🇱' },
+                    { nombre: 'Japón', emoji: '🇯🇵' }
+                ],
+                perfil: { Fragancia: 8.0, Sabor: 8.0, 'Sabor Residual': 7.8, Acidez: 8.0, Cuerpo: 8.0, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'el-quindio',
+                nombre: 'El Quindío',
+                notas: 'Frutos Amarillos, Miel, Floral',
+                mercados: [
+                    { nombre: 'Países Nórdicos', emoji: '🇳🇴' },
+                    { nombre: 'Alemania', emoji: '🇩🇪' },
+                    { nombre: 'Taiwán', emoji: '🇹🇼' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.2, 'Sabor Residual': 8.0, Acidez: 8.2, Cuerpo: 8.2, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'el-tinto',
+                nombre: 'El Tinto',
+                notas: 'Frutos Rojos, Panela, Chocolate',
+                mercados: [
+                    { nombre: 'Italia', emoji: '🇮🇹' },
+                    { nombre: 'España', emoji: '🇪🇸' },
+                    { nombre: 'EE.UU. (General)', emoji: '🇺🇸' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.0, 'Sabor Residual': 8.0, Acidez: 8.0, Cuerpo: 8.2, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'guacharaquero',
+                nombre: 'Guacharaquero',
+                notas: 'Cítrico, Panela, Frutos Secos',
+                mercados: [
+                    { nombre: 'Reino Unido', emoji: '🇬🇧' },
+                    { nombre: 'Bélgica', emoji: '🇧🇪' },
+                    { nombre: 'Canadá', emoji: '🇨🇦' }
+                ],
+                perfil: { Fragancia: 8.2, Sabor: 8.0, 'Sabor Residual': 8.0, Acidez: 8.0, Cuerpo: 8.0, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'la-florida',
+                nombre: 'La Florida',
+                notas: 'Manzana Verde, Miel, Floral',
+                mercados: [
+                    { nombre: 'Japón', emoji: '🇯🇵' },
+                    { nombre: 'EE.UU. (Costa Oeste)', emoji: '🇺🇸' },
+                    { nombre: 'Francia', emoji: '🇫🇷' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.0, 'Sabor Residual': 8.0, Acidez: 8.2, Cuerpo: 8.0, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'la-honda',
+                nombre: 'La Honda',
+                notas: 'Floral, Cítrico, Aromático',
+                mercados: [
+                    { nombre: 'Países Nórdicos', emoji: '🇩🇰' },
+                    { nombre: 'Alemania', emoji: '🇩🇪' },
+                    { nombre: 'Corea del Sur', emoji: '🇰🇷' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.0, 'Sabor Residual': 7.8, Acidez: 8.2, Cuerpo: 8.0, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            },
+            {
+                id: 'la-hundida',
+                nombre: 'La Hundida',
+                notas: 'Frutos Rojos, Dulce, Panela',
+                mercados: [
+                    { nombre: 'Australia', emoji: '🇦🇺' },
+                    { nombre: 'Suiza', emoji: '🇨🇭' },
+                    { nombre: 'EE.UU. (General)', emoji: '🇺🇸' }
+                ],
+                perfil: { Fragancia: 8.5, Sabor: 8.2, 'Sabor Residual': 8.0, Acidez: 8.2, Cuerpo: 8.2, Uniformidad: 10, Balance: 10, 'Taza Limpia': 10, Dulzura: 10 }
+            }
+        ];
+
+        function getVeredaById(id) {
+            return veredasData.find(v => v.id === id);
+        }
+
+        async function callGeminiAPI(prompt, resultContainer, button) {
+            button.disabled = true;
+            resultContainer.innerHTML = '<p class="text-center text-gray-500">✨ Generando respuesta...</p>';
+            resultContainer.classList.remove('hidden');
+
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error de API: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text) {
+                    resultContainer.innerHTML = `<div class="prose max-w-none">${text.replace(/\n/g, '<br>')}</div><button onclick="this.parentElement.classList.add('hidden')" class="mt-2 text-sm text-red-500 font-semibold">Cerrar</button>`;
+                } else {
+                    throw new Error("No se recibió contenido válido de la API.");
+                }
+            } catch (error) {
+                console.error("Error llamando a la API de Gemini:", error);
+                resultContainer.innerHTML = `<p class="text-red-600">Lo sentimos, no se pudo generar la respuesta. Por favor, inténtelo de nuevo.</p><button onclick="this.parentElement.classList.add('hidden')" class="mt-2 text-sm text-red-500 font-semibold">Cerrar</button>`;
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        function generateTastingProfile(button, veredaId) {
+            const vereda = getVeredaById(veredaId);
+            if (!vereda) return;
+
+            const scores = Object.entries(vereda.perfil).map(([key, value]) => `${key}: ${value}`).join(', ');
+            const prompt = `Eres un catador de café de clase mundial. Basado en el siguiente perfil sensorial para un café de la vereda de ${vereda.nombre} en Ituango, Colombia, escribe una descripción de cata evocadora y atractiva de unas 60-80 palabras para un comprador internacional. Notas clave: ${vereda.notas}. Puntajes sensoriales (sobre 10): ${scores}.`;
+            
+            const resultContainer = document.getElementById(`gemini-result-${veredaId}`);
+            callGeminiAPI(prompt, resultContainer, button);
+        }
+
+        function generateFoodPairing(button, veredaId) {
+            const vereda = getVeredaById(veredaId);
+            if (!vereda) return;
+            
+            const prompt = `Como chef experto y conocedor de café, sugiere tres maridajes (food pairings) específicos y creativos que complementarían un café con estas características: ${vereda.notas}. Describe por qué cada maridaje funciona bien. Sé breve y atractivo para un menú de una cafetería de especialidad.`;
+
+            const resultContainer = document.getElementById(`gemini-result-${veredaId}`);
+            callGeminiAPI(prompt, resultContainer, button);
+        }
+
+        function createRadarChart(canvasId, data) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            const labels = Object.keys(data);
+            const values = Object.values(data);
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Puntaje Sensorial',
+                        data: values,
+                        backgroundColor: 'rgba(6, 214, 160, 0.2)',
+                        borderColor: 'rgba(6, 214, 160, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(6, 214, 160, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(6, 214, 160, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(7, 59, 76, 0.2)' },
+                            grid: { color: 'rgba(7, 59, 76, 0.2)' },
+                            pointLabels: { font: { size: 12, weight: '600' }, color: '#073B4C' },
+                            ticks: { beginAtZero: true, min: 7, max: 10, stepSize: 1, backdropColor: 'rgba(255, 255, 255, 0.75)', color: '#4A5568' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { callbacks: { title: function(tooltipItems) { const item = tooltipItems[0]; let label = item.chart.data.labels[item.dataIndex]; if (Array.isArray(label)) { return label.join(' '); } else { return label; } } } }
+                    }
+                }
+            });
+        }
+
+        window.onload = function() {
+            const grid = document.getElementById('veredas-grid');
+            veredasData.forEach(vereda => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-md p-6 flex flex-col';
+                
+                let mercadosHtml = vereda.mercados.map(m => `
+                    <div class="flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm">
+                        <span class="mr-2">${m.emoji}</span>
+                        <span>${m.nombre}</span>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <h2 class="text-2xl font-bold text-[#118AB2] mb-2">${vereda.nombre}</h2>
+                    <div class="chart-container mb-4">
+                        <canvas id="chart-${vereda.id}"></canvas>
+                    </div>
+                    <div class="text-left mt-auto">
+                        <p class="mb-3"><span class="font-semibold">Notas Clave:</span> ${vereda.notas}</p>
+                        <div>
+                            <h3 class="font-semibold mb-2">Mercados Potenciales:</h3>
+                            <div class="flex flex-wrap gap-2">${mercadosHtml}</div>
+                        </div>
+                        <div class="mt-6 space-y-2">
+                            <button onclick="generateTastingProfile(this, '${vereda.id}')" class="gemini-btn">✨ Describir Perfil de Sabor</button>
+                            <button onclick="generateFoodPairing(this, '${vereda.id}')" class="gemini-btn">✨ Sugerir Maridajes</button>
+                        </div>
+                        <div id="gemini-result-${vereda.id}" class="mt-4 p-4 bg-slate-50 rounded-lg border border-slate-200 hidden text-sm text-left"></div>
+                        <div class="mt-4 text-center">
+                            <a href="#" class="inline-block w-full bg-[#FF6B6B] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#E55A5A] transition-colors duration-300">
+                                Solicitar Muestra
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            veredasData.forEach(vereda => {
+                createRadarChart(`chart-${vereda.id}`, vereda.perfil);
+            });
+        };
+    </script>
+</body>
+</html>
+
